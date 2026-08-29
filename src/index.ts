@@ -4,7 +4,7 @@ import {
   shouldServe,
   glob,
   download,
-  Lambda,
+  NodejsLambda,
   BuildV3,
   PrepareCache,
   getNodeVersion
@@ -116,21 +116,31 @@ export const build: BuildV3 = async ({
   console.log('🐘 Creating lambda');
   const nodeVersion = await getNodeVersion(workPath);
 
-  const lambda = new Lambda({
-    files: {
-      // Located at /var/task/user
-      ...harverstedFiles,
-      // Located at /var/task/php (php bins + ini + modules)
-      // Located at /var/task/lib (shared libs)
-      ...runtimeFiles
-    },
-    handler: 'launcher.launcher',
-    runtime: nodeVersion.runtime,
-    environment: {
-      NOW_ENTRYPOINT: entrypoint,
-      NOW_PHP_DEV: meta.isDev ? '1' : '0'
-    },
-  });
+const lambda = new NodejsLambda({
+  files: {
+    // Located at /var/task/user
+    ...harverstedFiles,
+
+    // Located at /var/task/php, /var/task/lib
+    ...runtimeFiles
+  },
+
+  // Archivo real incluido dentro de la lambda
+  handler: 'launcher.js',
+
+  // Export real dentro de launcher.js
+  awsLambdaHandler: 'launcher.launcher',
+
+  runtime: nodeVersion.runtime,
+
+  shouldAddHelpers: false,
+  shouldAddSourcemapSupport: false,
+
+  environment: {
+    NOW_ENTRYPOINT: entrypoint,
+    NOW_PHP_DEV: meta.isDev ? '1' : '0'
+  },
+});
 
   return { output: lambda };
 };
