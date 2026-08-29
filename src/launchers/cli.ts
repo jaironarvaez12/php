@@ -12,10 +12,13 @@ function query({ entrypoint, body }: PhpInput): Promise<PhpOutput> {
   console.log(`🐘 Spawning: PHP CLI ${entrypoint}`);
 
   // php spawn options
-  const options: SpawnOptions = {
+const options: SpawnOptions = {
     stdio: ['pipe', 'pipe', 'pipe'],
-    env: process.env
-  };
+    env: {
+        ...process.env,
+        LD_LIBRARY_PATH: `/var/task/lib:${process.env.LD_LIBRARY_PATH || ''}`
+    }
+};
 
   // now vs now-dev
   if (!isDev()) {
