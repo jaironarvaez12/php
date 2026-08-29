@@ -22,6 +22,7 @@
     "build": "tsc",
     "test": "jest --silent",
     "test-watch": "jest --watch",
+    "prepare": "tsc",
     "prepublishOnly": "tsc"
   },
   "files": [
