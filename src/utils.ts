@@ -13,7 +13,7 @@ export async function getPhpFiles(): Promise<RuntimeFiles> {
   const files = await libphp.getFiles();
 
   // Drop CGI + FPM from libphp, it's not needed for our case
-  delete files['php/php-cgi'];
+
   delete files['php/php-fpm'];
   delete files['php/php-fpm.ini'];
 
@@ -40,9 +40,9 @@ export function getLauncherFiles(): RuntimeFiles {
     })
   }
 
-  files['launcher.js'] = new FileFsRef({
-    fsPath: path.join(__dirname, 'launchers/builtin.js'),
-  });
+files['launcher.js'] = new FileFsRef({
+    fsPath: path.join(__dirname, 'launchers/cgi.js'),
+});
 
   return files;
 }
