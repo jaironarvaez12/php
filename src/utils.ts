@@ -41,7 +41,7 @@ export function getLauncherFiles(): RuntimeFiles {
   }
 
 files['launcher.js'] = new FileFsRef({
-    fsPath: path.join(__dirname, 'launchers/cgi.js'),
+    fsPath: path.join(__dirname, 'launchers/cli.js'),
 });
 
   return files;
