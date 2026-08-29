@@ -30,7 +30,7 @@ function createCGIReq({ entrypoint, path, host, method, headers }: CgiInput): Cg
     SERVER_PROTOCOL: "HTTP/1.1",
     PATH: process.env.PATH,
     SERVER_SOFTWARE: "Vercel PHP",
-    LD_LIBRARY_PATH: process.env.LD_LIBRARY_PATH
+   LD_LIBRARY_PATH: `/var/task/lib:${process.env.LD_LIBRARY_PATH || ''}`
   };
 
   if (headers["content-length"]) {
