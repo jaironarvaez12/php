@@ -136,10 +136,11 @@ const lambda = new NodejsLambda({
   shouldAddHelpers: false,
   shouldAddSourcemapSupport: false,
 
-  environment: {
-    NOW_ENTRYPOINT: entrypoint,
-    NOW_PHP_DEV: meta.isDev ? '1' : '0'
-  },
+ environment: {
+  NOW_ENTRYPOINT: entrypoint,
+  NOW_PHP_DEV: meta.isDev ? '1' : '0',
+  VERCEL_PHP_DOCROOT: 'public'
+},
 });
 
   return { output: lambda };
